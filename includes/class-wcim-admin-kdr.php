@@ -1,9 +1,10 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
-class WCIM_Admin_KDR {
+class WCIM_Admin_KDR
+{
 
 	/**
 	 * Admin menu slug.
@@ -17,42 +18,43 @@ class WCIM_Admin_KDR {
 	 *
 	 * @return void
 	 */
-	public function register_menu() {
+	public function register_menu()
+	{
 		add_menu_page(
-			__( 'Inventory Management', 'woocommerce-inventory-management-kdr' ),
-			__( 'Inventory kdr', 'woocommerce-inventory-management-kdr' ),
+			__('Inventory Management', 'woocommerce-inventory-management-kdr'),
+			__('Inventory kdr', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
 			$this->menu_slug,
-			array( $this, 'render_dashboard_page' ),
+			array($this, 'render_dashboard_page'),
 			'dashicons-products',
-			56
+			30
 		);
 
 		add_submenu_page(
 			$this->menu_slug,
-			__( 'Dashboard', 'woocommerce-inventory-management-kdr' ),
-			__( 'Dashboard', 'woocommerce-inventory-management-kdr' ),
+			__('Dashboard', 'woocommerce-inventory-management-kdr'),
+			__('Dashboard', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
 			$this->menu_slug,
-			array( $this, 'render_dashboard_page' )
+			array($this, 'render_dashboard_page')
 		);
 
 		add_submenu_page(
 			$this->menu_slug,
-			__( 'All Inventory', 'woocommerce-inventory-management-kdr' ),
-			__( 'All Inventory', 'woocommerce-inventory-management-kdr' ),
+			__('All Inventory', 'woocommerce-inventory-management-kdr'),
+			__('All Inventory', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
 			'wcim-kdr-inventory',
-			array( $this, 'render_inventory_page' )
+			array($this, 'render_inventory_page')
 		);
 
 		add_submenu_page(
 			$this->menu_slug,
-			__( 'Settings', 'woocommerce-inventory-management-kdr' ),
-			__( 'Settings', 'woocommerce-inventory-management-kdr' ),
+			__('Settings', 'woocommerce-inventory-management-kdr'),
+			__('Settings', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
 			'wcim-kdr-settings',
-			array( $this, 'render_settings_page' )
+			array($this, 'render_settings_page')
 		);
 	}
 
@@ -62,14 +64,15 @@ class WCIM_Admin_KDR {
 	 * @param string $hook Current admin page hook.
 	 * @return void
 	 */
-	public function enqueue_assets( $hook ) {
+	public function enqueue_assets($hook)
+	{
 		$allowed_hooks = array(
 			'toplevel_page_' . $this->menu_slug,
 			'inventory-kdr_page_wcim-kdr-inventory',
 			'inventory-kdr_page_wcim-kdr-settings',
 		);
 
-		if ( ! in_array( $hook, $allowed_hooks, true ) ) {
+		if (! in_array($hook, $allowed_hooks, true)) {
 			return;
 		}
 
@@ -83,7 +86,7 @@ class WCIM_Admin_KDR {
 		wp_enqueue_script(
 			'wcim-kdr-admin',
 			WCIM_KDR_URL . 'assets/js/admin.js',
-			array( 'jquery' ),
+			array('jquery'),
 			WCIM_KDR_VERSION,
 			true
 		);
@@ -92,8 +95,8 @@ class WCIM_Admin_KDR {
 			'wcim-kdr-admin',
 			'wcim_kdr_admin',
 			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'wcim_kdr_admin_nonce' ),
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce'    => wp_create_nonce('wcim_kdr_admin_nonce'),
 			)
 		);
 	}
@@ -103,20 +106,21 @@ class WCIM_Admin_KDR {
 	 *
 	 * @return void
 	 */
-	public function render_dashboard_page() {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'woocommerce-inventory-management-kdr' ) );
+	public function render_dashboard_page()
+	{
+		if (! current_user_can('manage_woocommerce')) {
+			wp_die(esc_html__('You do not have permission to access this page.', 'woocommerce-inventory-management-kdr'));
 		}
 
 		$template = WCIM_KDR_PATH . 'templates/dashboard.php';
 
 		echo '<div class="wrap wcim-kdr-wrap">';
 
-		if ( file_exists( $template ) ) {
+		if (file_exists($template)) {
 			include $template;
 		} else {
-			echo '<h1>' . esc_html__( 'Inventory Dashboard', 'woocommerce-inventory-management-kdr' ) . '</h1>';
-			echo '<p>' . esc_html__( 'Dashboard template file not found.', 'woocommerce-inventory-management-kdr' ) . '</p>';
+			echo '<h1>' . esc_html__('Inventory Dashboard', 'woocommerce-inventory-management-kdr') . '</h1>';
+			echo '<p>' . esc_html__('Dashboard template file not found.', 'woocommerce-inventory-management-kdr') . '</p>';
 		}
 
 		echo '</div>';
@@ -127,20 +131,21 @@ class WCIM_Admin_KDR {
 	 *
 	 * @return void
 	 */
-	public function render_inventory_page() {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'woocommerce-inventory-management-kdr' ) );
+	public function render_inventory_page()
+	{
+		if (! current_user_can('manage_woocommerce')) {
+			wp_die(esc_html__('You do not have permission to access this page.', 'woocommerce-inventory-management-kdr'));
 		}
 
 		$template = WCIM_KDR_PATH . 'templates/inventory-page.php';
 
 		echo '<div class="wrap wcim-kdr-wrap">';
 
-		if ( file_exists( $template ) ) {
+		if (file_exists($template)) {
 			include $template;
 		} else {
-			echo '<h1>' . esc_html__( 'All Inventory', 'woocommerce-inventory-management-kdr' ) . '</h1>';
-			echo '<p>' . esc_html__( 'Inventory template file not found.', 'woocommerce-inventory-management-kdr' ) . '</p>';
+			echo '<h1>' . esc_html__('All Inventory', 'woocommerce-inventory-management-kdr') . '</h1>';
+			echo '<p>' . esc_html__('Inventory template file not found.', 'woocommerce-inventory-management-kdr') . '</p>';
 		}
 
 		echo '</div>';
@@ -151,20 +156,21 @@ class WCIM_Admin_KDR {
 	 *
 	 * @return void
 	 */
-	public function render_settings_page() {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'woocommerce-inventory-management-kdr' ) );
+	public function render_settings_page()
+	{
+		if (! current_user_can('manage_woocommerce')) {
+			wp_die(esc_html__('You do not have permission to access this page.', 'woocommerce-inventory-management-kdr'));
 		}
 
 		$template = WCIM_KDR_PATH . 'templates/settings-page.php';
 
 		echo '<div class="wrap wcim-kdr-wrap">';
 
-		if ( file_exists( $template ) ) {
+		if (file_exists($template)) {
 			include $template;
 		} else {
-			echo '<h1>' . esc_html__( 'Settings', 'woocommerce-inventory-management-kdr' ) . '</h1>';
-			echo '<p>' . esc_html__( 'Settings template file not found.', 'woocommerce-inventory-management-kdr' ) . '</p>';
+			echo '<h1>' . esc_html__('Settings', 'woocommerce-inventory-management-kdr') . '</h1>';
+			echo '<p>' . esc_html__('Settings template file not found.', 'woocommerce-inventory-management-kdr') . '</p>';
 		}
 
 		echo '</div>';

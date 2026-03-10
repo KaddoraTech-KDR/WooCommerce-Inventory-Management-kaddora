@@ -1,16 +1,18 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
-class WCIM_Activator_KDR {
+class WCIM_Activator_KDR
+{
 
 	/**
 	 * Run plugin activation tasks.
 	 *
 	 * @return void
 	 */
-	public static function activate() {
+	public static function activate()
+	{
 		self::create_stock_logs_table();
 		self::add_default_settings();
 		self::set_plugin_version();
@@ -21,7 +23,8 @@ class WCIM_Activator_KDR {
 	 *
 	 * @return void
 	 */
-	private static function create_stock_logs_table() {
+	private static function create_stock_logs_table()
+	{
 		global $wpdb;
 
 		$table_name      = $wpdb->prefix . 'wcim_stock_logs_kdr';
@@ -45,7 +48,7 @@ class WCIM_Activator_KDR {
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
+		dbDelta($sql);
 	}
 
 	/**
@@ -53,22 +56,23 @@ class WCIM_Activator_KDR {
 	 *
 	 * @return void
 	 */
-	private static function add_default_settings() {
+	private static function add_default_settings()
+	{
 		$default_settings = array(
 			'low_stock_threshold' => 5,
 			'enable_alerts'       => 'yes',
-			'alert_email'         => get_option( 'admin_email' ),
+			'alert_email'         => get_option('admin_email'),
 		);
 
-		if ( false === get_option( 'wcim_kdr_settings' ) ) {
-			add_option( 'wcim_kdr_settings', $default_settings );
+		if (false === get_option('wcim_kdr_settings')) {
+			add_option('wcim_kdr_settings', $default_settings);
 			return;
 		}
 
-		$existing_settings = get_option( 'wcim_kdr_settings', array() );
-		$merged_settings   = wp_parse_args( $existing_settings, $default_settings );
+		$existing_settings = get_option('wcim_kdr_settings', array());
+		$merged_settings   = wp_parse_args($existing_settings, $default_settings);
 
-		update_option( 'wcim_kdr_settings', $merged_settings );
+		update_option('wcim_kdr_settings', $merged_settings);
 	}
 
 	/**
@@ -76,7 +80,8 @@ class WCIM_Activator_KDR {
 	 *
 	 * @return void
 	 */
-	private static function set_plugin_version() {
-		update_option( 'wcim_kdr_version', WCIM_KDR_VERSION );
+	private static function set_plugin_version()
+	{
+		update_option('wcim_kdr_version', WCIM_KDR_VERSION);
 	}
 }
