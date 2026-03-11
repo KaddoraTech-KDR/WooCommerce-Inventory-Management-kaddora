@@ -12,7 +12,7 @@ $email = $options['alert_email'] ?? get_option('admin_email');
 
   <h1>Inventory Settings</h1>
 
-  <form method="post" action="options.php">
+  <form method="post" action="options.php" class="wcim-settings-form">
 
     <?php settings_fields('wcim_kdr_settings_group'); ?>
 

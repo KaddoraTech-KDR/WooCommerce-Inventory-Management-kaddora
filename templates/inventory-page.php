@@ -2,28 +2,31 @@
 
 $inventory_class = new WCIM_Inventory_KDR();
 
-$search = $_GET['search'] ?? '';
+$search = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
-$products = $inventory_class->get_products_with_stock($search);
+// $products = $inventory_class->get_products_with_stock($search);
+$products = $inventory_class->get_inventory_data($search);
 
 ?>
 
-<div class="wrap">
+<div class="wrap inventory">
 
-  <h1>Inventory</h1>
+  <div class="inventory-content">
+    <h1>Inventory</h1>
 
-  <!-- search -->
-  <form method="get">
-    <input type="hidden" name="page" value="wcim-kdr-inventory">
-    <input type="text" name="search" placeholder="Search product..." value="<?php echo esc_attr($_GET['search'] ?? ''); ?>">
-    <button class="button">Search</button>
-  </form>
+    <!-- search -->
+    <form method="get" class="inventory-search-form">
+      <input type="hidden" name="page" value="wcim-kdr-inventory">
+      <input type="text" name="search" placeholder="Search product..." value="<?php echo esc_attr($_GET['search'] ?? ''); ?>">
+      <button class="button button-primary" type="submit">Search</button>
+    </form>
+  </div>
 
   <!-- table -->
   <table class="widefat fixed striped">
 
     <thead>
-      <tr>
+      <tr class="table-header">
         <th>ID</th>
         <th>Name</th>
         <th>SKU</th>
@@ -36,13 +39,17 @@ $products = $inventory_class->get_products_with_stock($search);
       <?php if (!empty($products)) : ?>
         <?php foreach ($products as $product): ?>
           <tr>
-            <td><?php echo esc_html($product->get_id()); ?></td>
-            <td><?php echo esc_html($product->get_name()); ?></td>
-            <td><?php echo esc_html($product->get_sku()); ?></td>
+            <td><?php echo esc_html($product['id']); ?></td>
             <td>
-              <input type="number" min="0" class="wcim-stock-input" data-product="<?php echo esc_attr($product->get_id()); ?>" value="<?php echo esc_attr($product->get_stock_quantity()); ?>">
+              <a href="<?php echo esc_url(get_permalink($product['id'])); ?>" class="product-link">
+                <?php echo esc_html($product['name']); ?>
+              </a>
             </td>
-            <td><?php echo esc_html($product->get_stock_status()); ?></td>
+            <td><?php echo esc_html($product['sku']); ?></td>
+            <td>
+              <input type="number" min="0" class="wcim-stock-input" data-product="<?php echo esc_attr($product['id']); ?>" value="<?php echo esc_attr($product['stock']); ?>">
+            </td>
+            <td><?php echo esc_html($product['status']); ?></td>
           </tr>
         <?php endforeach; ?>
       <?php else: ?>

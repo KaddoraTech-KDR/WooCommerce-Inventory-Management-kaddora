@@ -23,7 +23,7 @@ $recent_logs = WCIM_Logs_KDR::get_recent_logs(10);
 	</div>
 
 	<!-- card -->
-	<div class="wcim-kdr-cards">
+	<div class="wcim-kdr-cards container-box">
 		<div class="wcim-kdr-card">
 			<h2><?php esc_html_e('Total Products', 'woocommerce-inventory-management-kdr'); ?></h2>
 			<p class="wcim-kdr-card-number"><?php echo esc_html($total_products); ?></p>
@@ -46,7 +46,7 @@ $recent_logs = WCIM_Logs_KDR::get_recent_logs(10);
 	</div>
 
 	<!-- sections -->
-	<div class="wcim-kdr-dashboard-sections">
+	<div class="wcim-kdr-dashboard-sections container-box">
 
 		<!-- Low Stock Alerts -->
 		<div class="wcim-kdr-panel">
@@ -58,8 +58,8 @@ $recent_logs = WCIM_Logs_KDR::get_recent_logs(10);
 				<table class="widefat striped">
 
 					<thead>
-						<tr>
-							<th>Title</th>
+						<tr class="table-header">
+							<th>Product</th>
 							<th>Stock</th>
 						</tr>
 					</thead>
@@ -67,8 +67,16 @@ $recent_logs = WCIM_Logs_KDR::get_recent_logs(10);
 					<tbody>
 						<?php foreach ($low_products as $product) : ?>
 							<tr>
-								<td><?php echo esc_html($product->get_name()); ?></td>
-								<td><?php echo esc_html($product->get_stock_quantity()); ?></td>
+								<td>
+									<a href="<?php echo esc_url(get_permalink($product->get_id())); ?>" class="product-link">
+										<?php echo esc_html($product->get_name()); ?>
+									</a>
+								</td>
+								<td>
+									<strong>
+										<?php echo esc_html($product->get_stock_quantity()); ?>
+									</strong>
+								</td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
@@ -88,7 +96,7 @@ $recent_logs = WCIM_Logs_KDR::get_recent_logs(10);
 			<table class="widefat striped">
 
 				<thead>
-					<tr>
+					<tr class="table-header">
 						<th>Product</th>
 						<th>Old</th>
 						<th>New</th>
@@ -106,10 +114,17 @@ $recent_logs = WCIM_Logs_KDR::get_recent_logs(10);
 							$user = get_user_by('id', $log->user_id);
 							?>
 							<tr>
-								<td><?php echo esc_html($product ? $product->get_name() : 'Unknown'); ?>
+								<td>
+									<a href="<?php echo esc_url(get_permalink($log->product_id)); ?>" class="product-link">
+										<?php echo esc_html($product ? $product->get_name() : 'Unknown'); ?>
+									</a>
 								</td>
 								<td><?php echo esc_html($log->old_stock); ?></td>
-								<td><?php echo esc_html($log->new_stock); ?></td>
+								<td>
+									<strong>
+										<?php echo esc_html($log->new_stock); ?>
+									</strong>
+								</td>
 								<!-- change -->
 								<td style="color: <?php echo $log->stock_change >= 0 ? 'green' : 'red'; ?>">
 									<?php echo esc_html($log->stock_change); ?>

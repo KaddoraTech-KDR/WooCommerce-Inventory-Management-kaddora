@@ -26,7 +26,7 @@ class WCIM_Inventory_KDR
     ];
 
     if (!empty($search)) {
-      $args['search'] = '*' . $search . '*';
+      $args['s'] = $search;
     }
 
     return wc_get_products($args);

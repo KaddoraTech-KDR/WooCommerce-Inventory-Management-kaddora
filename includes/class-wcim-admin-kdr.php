@@ -20,18 +20,18 @@ class WCIM_Admin_KDR
 	 */
 	public function register_menu()
 	{
-		add_menu_page(
+		add_submenu_page(
+			'woocommerce',
 			__('Inventory Management', 'woocommerce-inventory-management-kdr'),
 			__('Inventory kdr', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
 			$this->menu_slug,
 			array($this, 'render_dashboard_page'),
-			'dashicons-products',
 			30
 		);
 
 		add_submenu_page(
-			$this->menu_slug,
+			'woocommerce',
 			__('Dashboard', 'woocommerce-inventory-management-kdr'),
 			__('Dashboard', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
@@ -40,7 +40,7 @@ class WCIM_Admin_KDR
 		);
 
 		add_submenu_page(
-			$this->menu_slug,
+			'woocommerce',
 			__('All Inventory', 'woocommerce-inventory-management-kdr'),
 			__('All Inventory', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
@@ -49,7 +49,7 @@ class WCIM_Admin_KDR
 		);
 
 		add_submenu_page(
-			$this->menu_slug,
+			'woocommerce',
 			__('Settings', 'woocommerce-inventory-management-kdr'),
 			__('Settings', 'woocommerce-inventory-management-kdr'),
 			'manage_woocommerce',
@@ -67,14 +67,15 @@ class WCIM_Admin_KDR
 	public function enqueue_assets($hook)
 	{
 		$allowed_hooks = array(
-			'toplevel_page_' . $this->menu_slug,
-			'inventory-kdr_page_wcim-kdr-inventory',
-			'inventory-kdr_page_wcim-kdr-settings',
+			'woocommerce_page_' . $this->menu_slug,
+			'woocommerce_page_wcim-kdr-inventory',
+			'woocommerce_page_wcim-kdr-settings',
 		);
 
 		if (! in_array($hook, $allowed_hooks, true)) {
 			return;
 		}
+
 
 		wp_enqueue_style(
 			'wcim-kdr-admin',
